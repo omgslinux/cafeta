@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Diarios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Inicial</th>
+                <th>Final</th>
+                <th>Responsable</th>
+                <th>Colectivoid</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for diario in diarios %}
+            <tr>
+                <td><a href="{{ path('diario_show', { 'id': diario.id }) }}">{{ diario.fecha }}</a></td>
+                <td>{{ diario.inicial }}</td>
+                <td>{{ diario.final }}</td>
+                <td>{{ diario.responsable }}</td>
+                <td>{{ diario.colectivoId }}</td>
+                <td>{{ diario.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('diario_show', { 'id': diario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('diario_edit', { 'id': diario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('diario_new') }}">Create a new diario</a>
+        </li>
+    </ul>
+{% endblock %}

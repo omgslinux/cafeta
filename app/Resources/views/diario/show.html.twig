@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Diario</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if diario.fecha %}{{ diario.fecha|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Inicial</th>
+                <td>{{ diario.inicial }}</td>
+            </tr>
+            <tr>
+                <th>Final</th>
+                <td>{{ diario.final }}</td>
+            </tr>
+            <tr>
+                <th>Responsable</th>
+                <td>{{ diario.responsable }}</td>
+            </tr>
+            <tr>
+                <th>Colectivoid</th>
+                <td>{{ diario.colectivoId }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ diario.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('diario_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('diario_edit', { 'id': diario.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

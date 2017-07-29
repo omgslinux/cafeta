@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Colectivos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Comentario</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for colectivo in colectivos %}
+            <tr>
+                <td><a href="{{ path('colectivos_show', { 'id': colectivo.id }) }}">{{ colectivo.nombre }}</a></td>
+                <td>{{ colectivo.comentario }}</td>
+                <td>{{ colectivo.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('colectivos_show', { 'id': colectivo.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('colectivos_edit', { 'id': colectivo.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('colectivos_new') }}">Create a new colectivo</a>
+        </li>
+    </ul>
+{% endblock %}

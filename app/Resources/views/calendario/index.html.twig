@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Calendarios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Colectivoid</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calendario in calendarios %}
+            <tr>
+                <td><a href="{{ path('calendario_show', { 'id': calendario.id }) }}">{{ calendario.fecha }}</a></td>
+                <td>{{ calendario.colectivoId }}</td>
+                <td>{{ calendario.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('calendario_show', { 'id': calendario.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('calendario_edit', { 'id': calendario.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('calendario_new') }}">Create a new calendario</a>
+        </li>
+    </ul>
+{% endblock %}

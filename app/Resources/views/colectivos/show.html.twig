@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Colectivo</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ colectivo.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Comentario</th>
+                <td>{{ colectivo.comentario }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ colectivo.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('colectivos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('colectivos_edit', { 'id': colectivo.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
