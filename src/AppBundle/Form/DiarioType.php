@@ -5,9 +5,11 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 class DiarioType extends AbstractType
 {
@@ -17,25 +19,27 @@ class DiarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('turno', EntityType::class, array(
-          'class' => 'AppBundle:Diario',
-          'label' => 'Turno'
+        ->add('fecha', DateType::class, array(
+          'widget' => 'single_text',
+          'label' => 'Fecha'
         ))
-        ->add('colectivo', EntityType::class, array(
-          'class' => 'AppBundle:Coletivos',
+        ->add('colectivo', TextType::class, array(
           'label' => 'Colectivo'
         ))
-        ->add('inicial', CurrencyType::class, array(
+        ->add('inicial', MoneyType::class, array(
           'label' => 'Caja inicial'
         ))
-        ->add('final', CurrencyType::class, array(
+        ->add('final', MoneyType::class, array(
           'label' => 'Caja al cerrar'
         ))
-        ->add('sobre', CurrencyType::class, array(
+        ->add('sobre', MoneyType::class, array(
           'label' => 'Cantidad en el sobre'
         ))
         ->add('responsable', TextType::class, array(
           'label' => 'El sobre se entrega a'
+        ))
+        ->add('observaciones', TextType::class, array(
+          'label' => 'Observaciones'
         ))
         ;
     }

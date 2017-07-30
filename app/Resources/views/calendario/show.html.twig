@@ -10,8 +10,12 @@
                 <td>{% if calendario.fecha %}{{ calendario.fecha|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
+                <th>Turno</th>
+                <td>{{ calendario.turno == 0 ? 'Mañana' : 'Tarde' }}</td>
+            </tr>
+            <tr>
                 <th>Colectivoid</th>
-                <td>{{ calendario.colectivoId }}</td>
+                <td>{{ calendario.colectivo }}</td>
             </tr>
             <tr>
                 <th>Id</th>

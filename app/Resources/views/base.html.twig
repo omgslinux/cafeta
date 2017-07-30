@@ -3,14 +3,11 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Aplicación de titulizaciones{% if title is defined %} - {{ title }}{% endif %}{% if is_granted('ROLE_USER') %} - ({{ app.user.username }}/{{ app.user.getRol }}/id:{{ app.user.id }}){% endif %}{% endblock %}</title>
+        <title>{% block title %}Aplicación de cafeta{% if title is defined %} - {{ title }}{% endif %}{% if is_granted('ROLE_USER') %} - ({{ app.user.username }}/{{ app.user.getRol }}/id:{{ app.user.id }}){% endif %}{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.min.css')}}" />
-        <link rel="stylesheet" href="{{ asset('css/boe/doc.css')}}" />
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="shortcut icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/0b673c62218d8d3175d24dd80131b574?s=32" sizes="16x16" />
     </head>
     <body>
 
@@ -24,77 +21,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="{{ path('homepage') }}">Aplicación de titulizaciones</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Enlaces<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="http://pahmadrid.org/kit-de-titulizaciones/" target="_blank">Kit de titulizaciones</a></li>
-                        <li><a href="http://titulizaciones.wordpress.com/" target="_blank">Blog titulizaciones</a></li>
-                        <li><a href="http://tribunalciudadanodejusticia.wordpress.com/" target="_blank">Tribunal Ciudadano de Justicia 15M</a></li>
-                        <li><a href="http://15mparato.wordpress.com/" target="_blank">15MpaRato</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="https://titulizaciones.titanpad.com/actas" target="_blank">Actas titulizaciones</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Búsquedas<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('search_funds_bybank')}}">Fondos por cedente</a></li>
-                        <li><a href="{{ path('search_funds_bymanager')}}">Fondos por gestora</a></li>
-                        <li><a href="{{ path('search_funds_byloan')}}">Fondos por préstamo hipotecario</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{{ path('search_laws_index')}}">Leyes</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{{ path('pdf_index')}}">Descargar PDFs</a></li>
-                    </ul>
-                </li>
-              </ul>
-
               <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Enlaces de ayuda<span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                      <li><a href="https://docs.google.com/spreadsheets/d/1ZPleE6JWO_sQzjzViKb9SHLdFzUFHGv9g3GV-pphpak/edit" target="_blank">Hoja de cálculo</a></li>
-                      <li><a href="http://www.cnmv.es/Portal/Consultas/FTA/ListadoGestorasFTA.aspx" target='_blank'>Enlace CNMV a las gestoras</a></li>
-                  </ul>
-                </li>
                 {% if is_granted('ROLE_USER') %}
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menú de usuario<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                      <li><a href="{{ path('profile_tasks_index') }}">Tareas</a></li>
-                      <li><a href="{{ path('profile_user_index') }}">Perfil</a></li>
+                    <li><a href="{{ path('diario_new')}}">Cierre de caja del día</a></li>
                   </ul>
-                </li>
-                {% endif %}
-            {% if is_granted('ROLE_MANAGER') %}
-                <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gestión<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ path('manage_funds_index') }}">Fondos</a></li>
-                    <li><a href="{{ path('manage_fundmanagers_index') }}">Gestoras</a></li>
-                    <li><a href="{{ path('manage_laws_index') }}">Leyes</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="https://drive.google.com/drive/folders/0B_Y_bq4UZLQiV3ROeHR3R3RfTjg">Enlace a csv Gdrive</a></li>
-                </ul>
                 </li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{{ path('admin_funds_index') }}">Fondos</a></li>
-                    <li><a href="{{ path('admin_banks_index') }}">Bancos</a></li>
-                    <li><a href="{{ path('admin_bankcategories_index') }}">Categorías de bancos</a></li>
-                    <li><a href="{{ path('admin_linktypes_index') }}">Tipos de enlace</a></li>
-                    <li><a href="{{ path('admin_lawtypes_index') }}">Tipos de leyes</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ path('admin_users_index') }}">Usuarios</a></li>
                   </ul>
                 </li>
                 {% endif %}

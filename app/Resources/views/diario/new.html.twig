@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Diario creation</h1>
+    <h1>Cierre de caja</h1>
+
+    <h2><strong>IMPORTANTE:</strong> La fecha es la de inicio del turno.</h2>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <p>{{ form_label(form.fecha) }}: {{ form_widget(form.fecha) }}</p>
+        <p>{{ form_label(form.colectivo) }}: {{ form_widget(form.colectivo) }}</p>
+        <p>{{ form_label(form.inicial) }}: {{ form_widget(form.inicial) }}
+        {{ form_label(form.final) }}: {{ form_widget(form.final) }}</p>
+        <p>{{ form_label(form.sobre) }}: {{ form_widget(form.sobre) }}
+        {{ form_label(form.responsable) }}: {{ form_widget(form.responsable) }}</p>
+        <p>{{ form_label(form.observaciones) }}: {{ form_widget(form.observaciones) }}</p>
+        <input type="submit" value="Guardar" />
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('diario_index') }}">Back to the list</a>
-        </li>
-    </ul>
 {% endblock %}

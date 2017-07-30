@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\admin;
 
 use AppBundle\Entity\Usuarios;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Usuario controller.
  *
- * @Route("usuarios")
+ * @Route("/admin/usuarios")
  */
 class UsuariosController extends Controller
 {

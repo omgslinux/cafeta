@@ -81,7 +81,7 @@ class Usuarios implements UserInterface
      */
     public function getNombre()
     {
-        return $this->user;
+        return $this->nombre;
     }
 
     /**
@@ -189,7 +189,7 @@ class Usuarios implements UserInterface
 
     public function getUsername()
     {
-        return $this->getUser() . '@' . $this->getDomainName();
+        return $this->getNombre();
     }
 
     public function serialize()

@@ -3,31 +3,20 @@
 {% block body %}
     <h1>Calendarios list</h1>
 
-    <table>
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Fecha</th>
+                <th>Turno</th>
                 <th>Colectivoid</th>
-                <th>Id</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for calendario in calendarios %}
             <tr>
-                <td><a href="{{ path('calendario_show', { 'id': calendario.id }) }}">{{ calendario.fecha }}</a></td>
-                <td>{{ calendario.colectivoId }}</td>
-                <td>{{ calendario.id }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('calendario_show', { 'id': calendario.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('calendario_edit', { 'id': calendario.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
+                <td><a href="{{ path('calendario_show', { 'id': calendario.id }) }}">{{ calendario.fecha|date('Y-m-d') }}</a></td>
+                <td>{{ calendario.turno == 0 ? 'Mañana' : 'Tarde' }}</td>
+                <td>{{ calendario.colectivo }}</td>
             </tr>
         {% endfor %}
         </tbody>

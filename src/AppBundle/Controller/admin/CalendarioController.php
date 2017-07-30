@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\admin;
 
 use AppBundle\Entity\Calendario;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Calendario controller.
  *
- * @Route("calendario")
+ * @Route("/admin/calendario")
  */
 class CalendarioController extends Controller
 {

@@ -9,7 +9,7 @@ use AppBundle\Entity\Calendario;
 /**
  * Diario
  *
- * @ORM\Table(name="diario", uniqueConstraints={@ORM\UniqueConstraint(name="fecha_UNIQUE", columns={"fecha"})})
+ * @ORM\Table(name="diario")
  * @ORM\Entity
  */
 class Diario
@@ -24,11 +24,11 @@ class Diario
     private $id;
 
     /**
-     * @var \DateTime
+     * @var Calendario
      *
-     * @ORM\ManyToOne(TargeEntity="Calendario", inversedBy="turnos")
+     * @ORM\Column(type="date")
      */
-    private $turno;
+    private $fecha;
 
     /**
      * @var string
@@ -61,9 +61,16 @@ class Diario
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Colectivos", inversedBy="colectivos")
+     * @ORM\Column(type="text",length=100)
      */
     private $colectivo;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="text")
+     */
+    private $observaciones;
 
 
 
@@ -78,27 +85,27 @@ class Diario
     }
 
     /**
-     * Set turno
+     * Set fecha
      *
-     * @param Calendario $turno
+     * @param \DateTime $fecha
      *
      * @return Diario
      */
-    public function setTurno(Calendario $valor)
+    public function setFecha($valor)
     {
-        $this->turno = $valor;
+        $this->fecha = $valor;
 
         return $this;
     }
 
     /**
-     * Get turno
+     * Get fecha
      *
      * @return string
      */
-    public function getTurno()
+    public function getFecha()
     {
-        return $this->turno;
+        return $this->fecha;
     }
 
     /**
@@ -202,11 +209,11 @@ class Diario
     /**
      * Set colectivo
      *
-     * @param Colectivos $colectivo
+     * @param string $colectivo
      *
      * @return Diario
      */
-    public function setColectivo(Colectivos $valor)
+    public function setColectivo($valor)
     {
         $this->colectivo = $valor;
 
@@ -216,11 +223,35 @@ class Diario
     /**
      * Get colectivo
      *
-     * @return Colectivos
+     * @return string
      */
     public function getColectivo()
     {
         return $this->colectivo;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Diario
+     */
+    public function setObservaciones($valor)
+    {
+        $this->observaciones = $valor;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 
 

@@ -7,7 +7,7 @@ security:
         users:
             entity:
               class: AppBundle:Usuarios
-              property: name
+              property: nombre
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -40,6 +40,6 @@ security:
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER]
     encoders:
-      AppBundle\Entity\User:
+      AppBundle\Entity\Usuarios:
         algorithm: sha512
         # algorithm: plaintext

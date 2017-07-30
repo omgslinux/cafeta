@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Calendario;
 use AppBundle\Entity\Colectivos;
 
@@ -31,7 +32,7 @@ class Calendario
     private $fecha;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
      * @ORM\Column(type="integer")
      */
@@ -40,9 +41,10 @@ class Calendario
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Colectivos", inversedBy="colectivo")
+     * @ORM\ManyToOne(targetEntity="Colectivos", inversedBy="calendarios")
      */
     private $colectivo;
+
 
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\admin;
 
 use AppBundle\Entity\Colectivos;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Colectivo controller.
  *
- * @Route("colectivos")
+ * @Route("/admin/colectivos")
  */
 class ColectivosController extends Controller
 {
@@ -39,7 +39,7 @@ class ColectivosController extends Controller
      */
     public function newAction(Request $request)
     {
-        $colectivo = new Colectivo();
+        $colectivo = new Colectivos();
         $form = $this->createForm('AppBundle\Form\ColectivosType', $colectivo);
         $form->handleRequest($request);
 
