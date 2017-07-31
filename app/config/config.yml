@@ -37,6 +37,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+        - "Forms/cafeta_layout.html.twig"
 
 # Doctrine Configuration
 doctrine:

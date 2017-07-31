@@ -1,19 +1,41 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Cierre de caja</h1>
-
-    <h2><strong>IMPORTANTE:</strong> La fecha es la de inicio del turno.</h2>
+    <h3>Cierre de caja</h3>
 
     {{ form_start(form) }}
-        <p>{{ form_label(form.fecha) }}: {{ form_widget(form.fecha) }}</p>
-        <p>{{ form_label(form.colectivo) }}: {{ form_widget(form.colectivo) }}</p>
-        <p>{{ form_label(form.inicial) }}: {{ form_widget(form.inicial) }}
-        {{ form_label(form.final) }}: {{ form_widget(form.final) }}</p>
-        <p>{{ form_label(form.sobre) }}: {{ form_widget(form.sobre) }}
-        {{ form_label(form.responsable) }}: {{ form_widget(form.responsable) }}</p>
-        <p>{{ form_label(form.observaciones) }}: {{ form_widget(form.observaciones) }}</p>
-        <input type="submit" value="Guardar" />
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_row(form.fecha) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_row(form.colectivo) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                {{ form_row(form.inicial) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.final) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.sobre) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.responsable) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_row(form.observaciones) }}
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-default">Guardar</button>
     {{ form_end(form) }}
 
 {% endblock %}

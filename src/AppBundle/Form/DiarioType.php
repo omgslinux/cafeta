@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -21,25 +22,37 @@ class DiarioType extends AbstractType
         $builder
         ->add('fecha', DateType::class, array(
           'widget' => 'single_text',
-          'label' => 'Fecha'
+          'label' => 'Fecha de inicio de turno',
         ))
         ->add('colectivo', TextType::class, array(
-          'label' => 'Colectivo'
+          'label' => 'Colectivo',
         ))
         ->add('inicial', MoneyType::class, array(
-          'label' => 'Caja inicial'
+          'label' => 'Caja inicial',
+          'attr' => array(
+            'placeholder' => '0,00',
+          )
         ))
         ->add('final', MoneyType::class, array(
-          'label' => 'Caja al cerrar'
+          'label' => 'Caja al cerrar',
+          'attr' => array(
+            'placeholder' => '0,00',
+          )
         ))
         ->add('sobre', MoneyType::class, array(
-          'label' => 'Cantidad en el sobre'
+          'label' => 'Cantidad en sobre',
+          'attr' => array(
+            'placeholder' => '0,00',
+          )
         ))
         ->add('responsable', TextType::class, array(
-          'label' => 'El sobre se entrega a'
+          'label' => 'El sobre se entrega a',
         ))
-        ->add('observaciones', TextType::class, array(
-          'label' => 'Observaciones'
+        ->add('observaciones', TextareaType::class, array(
+          'label' => 'Observaciones',
+          'attr' => array (
+            'rows' => 3
+          )
         ))
         ;
     }
