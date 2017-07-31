@@ -1,7 +1,15 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 {% block money_widget -%}
     <div class="input-group">
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' money-type')|trim}) -%}
         {{- block('form_widget_simple') -}}
         <span class="input-group-addon">€</span>
     </div>
 {%- endblock money_widget %}
+
+{% block form_widget_simple -%}
+    {% if type is not defined or type not in ['file', 'hidden'] %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control input-sm')|trim}) -%}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock form_widget_simple %}
