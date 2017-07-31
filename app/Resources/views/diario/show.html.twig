@@ -1,33 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Diario</h1>
+    <h1>Cierre de caja {% if diario.fecha %}{{ diario.fecha|date('d/m/Y') }}{% endif %}</h1>
 
-    <table>
+    <table class="table table-bordered">
         <tbody>
             <tr>
-                <th>Fecha</th>
-                <td>{% if diario.fecha %}{{ diario.fecha|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-            <tr>
                 <th>Inicial</th>
-                <td>{{ diario.inicial }}</td>
-            </tr>
-            <tr>
                 <th>Final</th>
-                <td>{{ diario.final }}</td>
+                <th>Cantidad en sobre</th>
+                <th>Entregado a</th>
+                <th>Colectivo</th>
             </tr>
             <tr>
-                <th>Responsable</th>
+                <td>{{ diario.inicial }} €</td>
+                <td>{{ diario.final }} €</td>
+                <td>{{ diario.sobre }} €</td>
                 <td>{{ diario.responsable }}</td>
-            </tr>
-            <tr>
-                <th>Colectivoid</th>
                 <td>{{ diario.colectivo }}</td>
             </tr>
         </tbody>
     </table>
-
+    {% if is_granted('ROLE_ADMIN') %}
     <ul>
         <li>
             <a href="{{ path('diario_index') }}">Back to the list</a>
@@ -41,4 +35,6 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    {% endif %}
+    <h3><a href="{{ path('diario_new')}}">Nuevo cierre de caja</a></h3>
 {% endblock %}
