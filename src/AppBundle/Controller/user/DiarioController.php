@@ -106,6 +106,7 @@ class DiarioController extends Controller
      *
      * @Route("/{id}", name="diario_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")"
      */
     public function deleteAction(Request $request, Diario $diario)
     {
