@@ -5,7 +5,9 @@ namespace AppBundle\Controller\user;
 use AppBundle\Entity\Diario;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Diario controller.
@@ -78,6 +80,7 @@ class DiarioController extends Controller
      *
      * @Route("/{id}/edit", name="diario_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")"
      */
     public function editAction(Request $request, Diario $diario)
     {
