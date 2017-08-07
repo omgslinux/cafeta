@@ -24,14 +24,15 @@ class DiarioController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
 
-        $diarios = $em->getRepository('AppBundle:Diario')->findAll();
+  //      $diarios = $em->getRepository('AppBundle:Diario')->findAll();
 
-        return $this->render('diario/index.html.twig', array(
+        return $this->redirectToRoute('diario_new');
+/*        return $this->render('diario/index.html.twig', array(
             'diarios' => $diarios,
         ));
-    }
+*/    }
 
     /**
      * Creates a new diario entity.
@@ -50,6 +51,8 @@ class DiarioController extends Controller
             $em->persist($diario);
             $em->flush();
 
+            return $this->redirectToRoute('diario_new');
+
             return $this->redirectToRoute('diario_show', array('id' => $diario->getId()));
         }
 
@@ -64,6 +67,7 @@ class DiarioController extends Controller
      *
      * @Route("/{id}", name="diario_show")
      * @Method("GET")
+     * @Security("has_role('ROLE_ADMIN')")"
      */
     public function showAction(Diario $diario)
     {
