@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Colectivo</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Fecha</th>
+                <td><a href="{{ path('pedidos_edit', { 'id': item.id }) }}">{{ item.fecha|date('d/m/Y') }}</a></td>
+            </tr>
+            <tr>
+                <th>Importe total</th>
+                <td>{{ item.total }}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ item.comentario }}</td>
+            </tr>
+            {% if item.getProductos|length %}
+            <tr>
+              <th>Detalle</th>
+              {% for producto in item.getProductos %}
+              <td>{{ producto.producto.corto }} = {{ producto.importe }} €</td>
+              {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pedidos_index') }}">{% trans %}Back to the list{% endtrans %}</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

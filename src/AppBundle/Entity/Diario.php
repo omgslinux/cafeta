@@ -59,14 +59,14 @@ class Diario
     private $responsable;
 
     /**
-     * @var integer
+     * @var text
      *
      * @ORM\Column(type="text",length=100)
      */
     private $colectivo;
 
     /**
-     * @var integer
+     * @var text
      *
      * @ORM\Column(type="text")
      */

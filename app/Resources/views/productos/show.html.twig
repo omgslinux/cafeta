@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Producto</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Nombre Corto</th>
+                <td>{{ item.corto }}</td>
+            </tr>
+            <tr>
+                <th>Nombre largo</th>
+                <td>{{ item.largo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('productos_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('productos_edit', { 'id': item.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

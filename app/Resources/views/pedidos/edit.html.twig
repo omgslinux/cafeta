@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  {% if delete_form is defined %}
+    <h1>Edición de pedido</h1>
+    {% else %}
+    <h1>Nuevo pedido</h1>
+    {% endif %}
+
+    {{ form_start(form) }}
+    <div class="row">
+      <div class="col-md-6">
+        {{ form_row(form.fecha) }}
+        </div>
+      <div class="col-md-6">
+        {{ form_row(form.total) }}
+        </div>
+    </div>
+        {% if form.productos is defined %}
+          <h3>{% trans %}Productos{% endtrans %} <a href="#" id="add-producto" class="btn btn-default"> + {% trans %}Nuevo{% endtrans %} </a></h3>
+          <table id="productos-container" class="table table-bordered"
+            data-prototype="{{ form_widget(form.productos.vars.prototype)|e('html_attr') }}">
+            <thead>
+              <tr>
+                  <th>{% trans %}Product{% endtrans %}</th>
+                  <th>{% trans %}Payment{% endtrans %}</th>
+                  <th>{% trans %}Delete?{% endtrans %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in form.productos %}
+                {{ form_widget(item) }}
+              {% endfor %}
+              {% do form.productos.setRendered %}
+            </tbody>
+          </table>
+        {% endif %}
+        <div class="row">
+        {{ form_row(form.comentario) }}
+        </div>
+        <input type="submit" value="{% trans %}Save{% endtrans %}" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('pedidos_index') }}">{% trans %}Back to the list{% endtrans %}</a>
+        </li>
+        {% if delete_form is defined %}
+            {# form_start(delete_form)
+            <li>
+                <input type="submit" value="Delete">
+                </li>
+            {{ form_end(delete_form) #}
+        {% endif %}
+    </ul>
+    <script>{% set fieldname="producto" %}
+    jQuery(document).ready(function() {
+        var ${{ fieldname }}sTable = $('#{{ fieldname }}s-container');
+        var $collectionHolder = ${{ fieldname }}sTable.find('tbody');
+        var $addLink = $('#add-{{ fieldname }}');
+
+        $collectionHolder.data('index', $collectionHolder.find('tr').length);
+
+        $addLink.on('click', function(e) {
+            e.preventDefault();
+
+            var index = $collectionHolder.data('index');
+            var prototype = ${{ fieldname }}sTable.data('prototype');
+            var newForm = prototype.replace(/__name__/g, index);
+
+            $collectionHolder.data('index', index + 1);
+
+            var $newRow = $(newForm);
+            $collectionHolder.append($newRow);
+        });
+
+        $collectionHolder.on('click', '.delete-{{ fieldname }}', function(e) {
+            e.preventDefault();
+
+            $(this).parents('tr').remove();
+        });
+    });
+    </script>
+{% endblock %}

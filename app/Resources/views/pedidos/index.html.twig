@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pedidos</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td><a href="{{ path('pedidos_show', { 'id': item.id }) }}">{{ item.fecha|date('d/m/Y H:i') }}</a></td>
+                <td>{{ item.total }} €</td>
+                <td>{{ item.comentario }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pedidos_new') }}">Crear un pedido nuevo</a>
+        </li>
+    </ul>
+{% endblock %}

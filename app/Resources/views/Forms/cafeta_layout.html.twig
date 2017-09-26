@@ -13,3 +13,11 @@
     {% endif %}
     {{- parent() -}}
 {%- endblock form_widget_simple %}
+
+{% block appbundle_pedidosproductos_widget %}
+    <tr>
+        <td>{{ form_widget(form.producto) }}</td>
+        <td>{{ form_widget(form.importe) }}</td>
+        <td><a href="#" class="delete-producto btn btn-danger">X</a></td>
+    </tr>
+{%- endblock appbundle_pedidosproductos_widget %}
