@@ -6,7 +6,7 @@
     {{ form_start(form) }}
         <div class="row">
             <div class="col-md-3">
-                {{ form_row(form.fecha) }}
+                {{ form_row(form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
             </div>
             <div class="col-md-9">
                 {{ form_row(form.colectivo) }}
