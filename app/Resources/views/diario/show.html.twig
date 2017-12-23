@@ -7,34 +7,13 @@
         <tbody>
             <tr>
                 <th>Inicial</th>
-                <th>Final</th>
-                <th>Cantidad en sobre</th>
-                <th>Entregado a</th>
                 <th>Colectivo</th>
             </tr>
             <tr>
                 <td>{{ diario.inicial }} €</td>
-                <td>{{ diario.final }} €</td>
-                <td>{{ diario.sobre }} €</td>
-                <td>{{ diario.responsable }}</td>
                 <td>{{ diario.colectivo }}</td>
             </tr>
         </tbody>
     </table>
-    {% if is_granted('ROLE_ADMIN') %}
-    <ul>
-        <li>
-            <a href="{{ path('diario_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('diario_edit', { 'id': diario.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-    {% endif %}
-    <h3><a href="{{ path('diario_new')}}">Nuevo cierre de caja</a></h3>
+    <h3><a href="{{ path('diario_close', {'id': diario.id }) }}">Nuevo cierre de caja</a></h3>
 {% endblock %}

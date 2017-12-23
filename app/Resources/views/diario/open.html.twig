@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="cafeta">
+    <h1>Apertura de caja</h1>
+
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_row(form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+          {{ form_row(form.inicial) }}
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                {{ form_row(form.colectivo) }}
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-default">Abrir caja</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

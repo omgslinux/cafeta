@@ -19,20 +19,28 @@ class DiarioType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $disabled=$options['activo']; //?false:true;
         $builder
         ->add('fecha', DateType::class, array(
           'widget' => 'single_text',
-          'label' => 'Fecha de inicio de turno',
+          'label' => 'Fecha turno',
+          'disabled' => $disabled,
         ))
         ->add('colectivo', TextType::class, array(
           'label' => 'Colectivo',
+          'disabled' => $disabled,
         ))
         ->add('inicial', MoneyType::class, array(
           'label' => 'Caja inicial',
+          'disabled' => $disabled,
           'attr' => array(
             'placeholder' => '0,00',
           )
         ))
+        ;
+        if ($options['activo']) {
+
+        $builder
         ->add('final', MoneyType::class, array(
           'label' => 'Caja al cerrar',
           'attr' => array(
@@ -45,9 +53,6 @@ class DiarioType extends AbstractType
             'placeholder' => '0,00',
           )
         ))
-        ->add('responsable', TextType::class, array(
-          'label' => 'El sobre se entrega a',
-        ))
         ->add('observaciones', TextareaType::class, array(
           'label' => 'Observaciones',
           'attr' => array (
@@ -55,6 +60,7 @@ class DiarioType extends AbstractType
           )
         ))
         ;
+      }
     }
 
     /**
@@ -63,7 +69,8 @@ class DiarioType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Diario'
+            'data_class' => 'AppBundle\Entity\Diario',
+            'activo' => false
         ));
     }
 

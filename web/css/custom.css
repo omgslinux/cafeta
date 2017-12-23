@@ -1,1 +1,22 @@
 .money-type, form-control-right { text-align: right; }
+
+body {
+  background-color: orange;
+}
+.cafeta {
+  font-size: 24px;
+}
+
+.cafeta .input-sm {
+  height: 44px;
+  font-size: 24px;
+}
+
+.cafeta .btn {
+  height: 44px;
+  font-size: 24px;
+}
+
+.cafeta textarea {
+  font-size: 24px;
+}

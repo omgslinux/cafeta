@@ -1,13 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Diario edit</h1>
+  <div class="cafeta">
+    <h1>Cierre de caja</h1>
 
     {{ form_start(edit_form) }}
+        <div class="row">
+            <div class="col-md-2">
+                {{ form_row(edit_form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_row(edit_form.colectivo) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(edit_form.inicial) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(edit_form.final) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(edit_form.sobre) }}
+            </div>
+        </div>
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" value="Cerrar caja del día" />
     {{ form_end(edit_form) }}
 
+    {% if is_granted('ROLE_ADMIN') %}
     <ul>
         <li>
             <a href="{{ path('diario_index') }}">Back to the list</a>
@@ -18,4 +39,6 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    {% endif %}
+  </div>
 {% endblock %}

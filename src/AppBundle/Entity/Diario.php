@@ -33,23 +33,23 @@ class Diario
     /**
      * @var string
      *
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     * @ORM\Column(type="decimal", precision=8, scale=2, nullable=true)
      */
     private $inicial;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     * @ORM\Column(type="decimal", precision=8, scale=2, nullable=true)
      */
-    private $final;
+    private $final=0;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     * @ORM\Column(type="decimal", precision=8, scale=2, nullable=true)
      */
-    private $sobre;
+    private $sobre=0;
 
     /**
      * @var string
@@ -71,6 +71,15 @@ class Diario
      * @ORM\Column(type="text")
      */
     private $observaciones;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $activo=true;
+
+
 
 
 
@@ -252,6 +261,30 @@ class Diario
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return Diario
+     */
+    public function setActivo($valor)
+    {
+        $this->activo = $valor;
+
+        return $this;
+    }
+
+    /**
+     * Is activo
+     *
+     * @return boolean
+     */
+    public function isActivo()
+    {
+        return $this->activo;
     }
 
 
