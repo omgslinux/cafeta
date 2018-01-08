@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 class DiarioType extends AbstractType
 {
@@ -33,6 +34,9 @@ class DiarioType extends AbstractType
         ->add('inicial', MoneyType::class, array(
           'label' => 'Caja inicial',
           'disabled' => $disabled,
+          'constraints' => array(
+            new NotEqualTo('0')
+          ),
           'attr' => array(
             'placeholder' => '0,00',
           )
@@ -43,12 +47,18 @@ class DiarioType extends AbstractType
         $builder
         ->add('final', MoneyType::class, array(
           'label' => 'Caja al cerrar',
+          'constraints' => array(
+            new NotEqualTo('0')
+          ),
           'attr' => array(
             'placeholder' => '0,00',
           )
         ))
         ->add('sobre', MoneyType::class, array(
           'label' => 'Cantidad en sobre',
+          'constraints' => array(
+            new NotEqualTo('0')
+          ),
           'attr' => array(
             'placeholder' => '0,00',
           )

@@ -2,9 +2,15 @@
 
 {% block body %}
   <div class="cafeta">
-    <h1>Cierre de caja</h1>
 
-    {{ form_start(edit_form) }}
+    {% if not stillOpen %}
+      <h1>Caja cerrada</h1>
+      Deja en el buzón el sobre, indicando la fecha del turno, el colectivo y la cantidad ({{ edit_form.vars.value.sobre }} euros)
+      <br>
+      <a href="{{ path("logout")}}">Cierra la sesión</a> y no olvides cerrar todo, según el protocolo
+      {% else %}
+      <h1>Cierre de caja</h1>
+      {{ form_start(edit_form) }}
         <div class="row">
             <div class="col-md-2">
                 {{ form_row(edit_form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
@@ -18,15 +24,17 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                {{ form_row(edit_form.final) }}
+                {{ form_row(edit_form.final, { 'disabled': not stillOpen }) }}
             </div>
             <div class="col-md-6">
-                {{ form_row(edit_form.sobre) }}
+                {{ form_row(edit_form.sobre, { 'disabled': not stillOpen }) }}
             </div>
         </div>
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Cerrar caja del día" />
-    {{ form_end(edit_form) }}
+
+          <input type="submit" value="Cerrar caja del día" />
+          {{ form_end(edit_form) }}
+    {% endif %}
 
     {% if is_granted('ROLE_ADMIN') %}
     <ul>

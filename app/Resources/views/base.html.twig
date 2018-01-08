@@ -34,7 +34,7 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menú de usuario<span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="{{ path('diario_new')}}">Cierre de caja del día</a></li>
+                    <li><a href="{{ path('diario_new')}}">Caja del día</a></li>
                   </ul>
                 </li>
                 {% endif %}
@@ -48,9 +48,9 @@
                 {% endif %}
                 <li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a href="{{ path('logout') }}">Logout</a></li>
+                <a href="{{ path('logout') }}">Cerrar sesión</a></li>
                 {% else %}
-                <a href="{{ path('login') }}">Log in</a></li>
+                <a href="{{ path('login') }}">Iniciar sesión</a></li>
                 {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->
@@ -58,7 +58,14 @@
         </nav>
 
         <div class="container">
-        {% block body %}{% endblock %}
+          {% for label, messages in app.flashes %}
+          {% for message in messages %}
+          <div class="alert alert-{{ label }}">
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endfor %}
+          {% block body %}{% endblock %}
         </div>
         <!-- Needed for Forms Feature Detection -->
     		<script type="text/javascript" src="{{ asset('shared/js/modernizr.com/Modernizr-2.5.3.forms.js') }}">

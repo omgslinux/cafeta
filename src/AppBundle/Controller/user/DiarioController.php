@@ -150,17 +150,31 @@ class DiarioController extends Controller
         }
         $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => true]);
         $editForm->handleRequest($request);
+        $stillOpen=true;
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $diario->setActivo(false);
             $this->getDoctrine()->getManager()->flush();
+            $stillOpen=false;
+            $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/M/Y');
+            $sender="cafeta@ingobernable.net";
+            $recipient="omgs01@gmail.com";
+            $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
+        $message = \Swift_Message::newInstance()
+          ->setSubject($subject)
+          ->setFrom($sender)
+          ->setTo($recipient)
+          ->setBody($body)
+        ;
+        $this->mailer->send($message);
 
-            return $this->redirectToRoute('diario_index');
+            //return $this->redirectToRoute('diario_index');
         }
 
         return $this->render('diario/edit.html.twig', array(
             'diario' => $diario,
             'edit_form' => $editForm->createView(),
+            'stillOpen' => $stillOpen
             //'delete_form' => $deleteForm->createView(),
         ));
     }
