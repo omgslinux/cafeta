@@ -5,7 +5,7 @@
 
     {% if not stillOpen %}
       <h1>Caja cerrada</h1>
-      Deja en el buzón el sobre, indicando la fecha del turno, el colectivo y la cantidad ({{ edit_form.vars.value.sobre }} euros)
+      Deja en el buzón el sobre, indicando la fecha del turno, el colectivo y la cantidad ({{ diario.sobre }} euros)
       <br>
       <a href="{{ path("logout")}}">Cierra la sesión</a> y no olvides cerrar todo, según el protocolo
       {% else %}

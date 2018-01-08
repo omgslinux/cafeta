@@ -156,30 +156,45 @@ class DiarioController extends Controller
             $diario->setActivo(false);
             $this->getDoctrine()->getManager()->flush();
             $stillOpen=false;
-            $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/M/Y');
-            $sender="cafeta@ingobernable.net";
-            $recipient="omgs01@gmail.com";
-            $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
-        $message = \Swift_Message::newInstance()
-          ->setSubject($subject)
-          ->setFrom($sender)
-          ->setTo($recipient)
-          ->setBody($body)
-        ;
-        $this->mailer->send($message);
-
-            //return $this->redirectToRoute('diario_index');
+            return $this->redirectToRoute('diario_send_close', [ 'id' => $diario->getId()]);
         }
-
         return $this->render('diario/edit.html.twig', array(
-            'diario' => $diario,
-            'edit_form' => $editForm->createView(),
-            'stillOpen' => $stillOpen
-            //'delete_form' => $deleteForm->createView(),
+          'diario' => $diario,
+          'edit_form' => $editForm->createView(),
+          'stillOpen' => $stillOpen
+          //'delete_form' => $deleteForm->createView(),
         ));
+
     }
 
     /**
+     * Sends en email al cerrar la caja
+     *
+     * @Route("/{id}/sendclose", name="diario_send_close")
+     * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_USER')")"
+     */
+    public function sendCloseAction(\Swift_Mailer $mailer, Diario $diario)
+    {
+      $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/M/Y');
+      $sender="cafeta@ingobernable.net";
+      $recipient="omgs01@gmail.com";
+      $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
+      $message = \Swift_Message::newInstance()
+      ->setSubject($subject)
+      ->setFrom($sender)
+      ->setTo($recipient)
+      ->setBody($body)
+      ;
+
+      $mailer->send($message);
+        return $this->render('diario/edit.html.twig', array(
+          'diario' => $diario,
+          'stillOpen' => false
+        ));
+
+    }
+  /**
      * Deletes a diario entity.
      *
      * @Route("/{id}", name="diario_delete")
