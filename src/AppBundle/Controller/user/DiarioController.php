@@ -178,7 +178,7 @@ class DiarioController extends Controller
     {
       $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/m/Y');
       $sender="cafeta@ingobernable.net";
-      $recipient="cafeta"; // Alias que hay que crear en /etc/aliases
+      $recipient="caja"; // Alias que hay que crear en /etc/aliases
       $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
       $message = \Swift_Message::newInstance()
       ->setSubject($subject)
