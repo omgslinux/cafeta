@@ -66,7 +66,8 @@ class DiarioType extends AbstractType
         ->add('observaciones', TextareaType::class, array(
           'label' => 'Observaciones',
           'attr' => array (
-            'rows' => 3
+            'rows' => 3,
+            'placeholder' => 'Indica al menos si has pedido cervezas o hay que pedirlas',
           )
         ))
         ;

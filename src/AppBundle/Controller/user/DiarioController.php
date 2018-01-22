@@ -176,9 +176,9 @@ class DiarioController extends Controller
      */
     public function sendCloseAction(\Swift_Mailer $mailer, Diario $diario)
     {
-      $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/M/Y');
+      $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/m/Y');
       $sender="cafeta@ingobernable.net";
-      $recipient="omgs01@gmail.com";
+      $recipient="cafeta"; // Alias que hay que crear en /etc/aliases
       $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
       $message = \Swift_Message::newInstance()
       ->setSubject($subject)
