@@ -20,7 +20,12 @@ class DiarioType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $disabled=$options['activo']; //?false:true;
+        if ($options['admin']) {
+            $disabled=false;
+        } else {
+          $disabled=$options['activo']; //?false:true;
+        }
+
         $builder
         ->add('fecha', DateType::class, array(
           'widget' => 'single_text',
@@ -42,7 +47,7 @@ class DiarioType extends AbstractType
           )
         ))
         ;
-        if ($options['activo']) {
+        if ($options['activo']||$options['admin']) {
 
         $builder
         ->add('final', MoneyType::class, array(
@@ -81,7 +86,8 @@ class DiarioType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Diario',
-            'activo' => false
+            'activo' => false,
+            'admin' => false,
         ));
     }
 

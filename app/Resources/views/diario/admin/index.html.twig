@@ -1,7 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Lista de Diarios</h1>
+    <h1>Lista de diarios</h1>
+    {{ form_start(form) }}
+    <div class="row">
+      <div class="col-md-4">
+      {{ form_row(form.startDate) }}
+      </div>
+      <div class="col-md-4">
+      {{ form_row(form.dueDate) }}
+      </div>
+      <div class="col-md-4">
+      {{ form_row(form.Buscar) }}
+      </div>
+    </div>
+    {{ form_end(form) }}
 
     <table class="table table-bordered">
         <thead>
@@ -9,21 +22,24 @@
                 <th>Fecha</th>
                 <th>Inicial</th>
                 <th>Final</th>
-                <th>Responsable</th>
+                <th>Sobre</th>
                 <th>Colectivo</th>
             </tr>
         </thead>
         <tbody>
-        {% for diario in diarios %}
+        {% set iniciales=0 %}{% set finales=0 %}
+        {% for diario in diarios %}{% set finales=finales+diario.sobre %}
             <tr>
                 <td><a href="{{ path('diario_show', { 'id': diario.id }) }}">{{ diario.fecha|date('d/m/Y') }}</a></td>
                 <td>{{ diario.inicial|number_format(2,',','.') }} €</td>
                 <td>{{ diario.final|number_format(2,',','.') }} €</td>
-                <td>{{ diario.responsable }}</td>
+                <td>{{ diario.sobre }}</td>
                 <td>{{ diario.colectivo }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <h2>Total recaudado: {{ finales }} €</h2>
+
 
 {% endblock %}

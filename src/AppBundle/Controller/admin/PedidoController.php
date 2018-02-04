@@ -10,7 +10,7 @@ use AppBundle\Entity\Pedido;
 /**
  * Pedido controller.
  *
- * @Route("/admn/pedidos")
+ * @Route("/admin/pedidos")
  */
 class PedidoController extends Controller
 {

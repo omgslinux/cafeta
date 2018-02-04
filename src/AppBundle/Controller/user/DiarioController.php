@@ -50,7 +50,7 @@ class DiarioController extends Controller
 
         // Hay que abrir caja
 
-        return $this->redirectToRoute('diario_new');
+        return $this->redirectToRoute('diario_open');
 /*        return $this->render('diario/index.html.twig', array(
             'diarios' => $diarios,
         ));
@@ -59,10 +59,10 @@ class DiarioController extends Controller
     /**
      * Creates a new diario entity.
      *
-     * @Route("/new", name="diario_new")
+     * @Route("/open", name="diario_open")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function openAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $fecha=new \DateTime();
@@ -94,49 +94,7 @@ class DiarioController extends Controller
     }
 
     /**
-     * Finds and displays a diario entity.
-     *
-     * @Route("/{id}", name="diario_show")
-     * @Method("GET")
-     */
-    public function showAction(Diario $diario)
-    {
-        // $deleteForm = $this->createDeleteForm($diario);
-
-        return $this->render('diario/show.html.twig', array(
-            'diario' => $diario,
-            //'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing diario entity.
-     *
-     * @Route("/{id}/edit", name="diario_edit")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_ADMIN')")"
-     */
-    public function editAction(Request $request, Diario $diario)
-    {
-        $deleteForm = $this->createDeleteForm($diario);
-        $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('diario_edit', array('id' => $diario->getId()));
-        }
-
-        return $this->render('diario/edit.html.twig', array(
-            'diario' => $diario,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing diario entity.
+     * Displays a form to close the current diario entity.
      *
      * @Route("/{id}/close", name="diario_close")
      * @Method({"GET", "POST"})
@@ -144,7 +102,6 @@ class DiarioController extends Controller
      */
     public function closeAction(Request $request, Diario $diario)
     {
-        //$deleteForm = $this->createDeleteForm($diario);
         if ($diario->getObservaciones()=='--') {
           $diario->setObservaciones('');
         }
@@ -158,11 +115,10 @@ class DiarioController extends Controller
             $stillOpen=false;
             return $this->redirectToRoute('diario_send_close', [ 'id' => $diario->getId()]);
         }
-        return $this->render('diario/edit.html.twig', array(
+        return $this->render('diario/close.html.twig', array(
           'diario' => $diario,
           'edit_form' => $editForm->createView(),
           'stillOpen' => $stillOpen
-          //'delete_form' => $deleteForm->createView(),
         ));
 
     }
@@ -188,46 +144,11 @@ class DiarioController extends Controller
       ;
 
       $mailer->send($message);
-        return $this->render('diario/edit.html.twig', array(
+        return $this->render('diario/close.html.twig', array(
           'diario' => $diario,
           'stillOpen' => false
         ));
 
     }
-  /**
-     * Deletes a diario entity.
-     *
-     * @Route("/{id}", name="diario_delete")
-     * @Method("DELETE")
-     * @Security("has_role('ROLE_ADMIN')")"
-     */
-    public function deleteAction(Request $request, Diario $diario)
-    {
-        $form = $this->createDeleteForm($diario);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($diario);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('diario_index');
-    }
-
-    /**
-     * Creates a form to delete a diario entity.
-     *
-     * @param Diario $diario The diario entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Diario $diario)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('diario_delete', array('id' => $diario->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
 }

@@ -6,10 +6,12 @@
     <table class="table table-bordered">
         <tbody>
             <tr>
+                <th>Acción</th>
                 <th>Inicial</th>
                 <th>Colectivo</th>
             </tr>
             <tr>
+                <td><a href="{{ path("diario_edit", {'id': diario.id }) }}">Editar</td>
                 <td>{{ diario.inicial }} €</td>
                 <td>{{ diario.colectivo }}</td>
             </tr>

@@ -10,7 +10,7 @@ use AppBundle\Entity\Calendario;
  * Diario
  *
  * @ORM\Table(name="diario")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DiarioRepository")
  */
 class Diario
 {

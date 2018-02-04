@@ -7,7 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Diario controller.
@@ -20,18 +23,57 @@ class DiarioController extends Controller
      * Lists all diario entities.
      *
      * @Route("/", name="admin_diario_index")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
-        $fecha=new \DateTime();
+        $repo=$em->getRepository(Diario::class);
+        $minDate=$repo->getMinDate();
+        $maxDate=$repo->getMaxDate();
 
-        $diarios=$em->getRepository(Diario::class)->findAll();
+        //$diario = new Diario();
+        $defaultData=['message' => 'Selecciona las fechas para filtrar'];
+        $form = $this->createFormBuilder($defaultData)
+          ->add('startDate', DateType::class,
+          [
+            'label' => 'Fecha inicio',
+            'data' => $minDate[0]->getFecha(),
+            'widget' => 'single_text'
+          ])
+          ->add('dueDate', DateType::class,
+          [
+            'label' => 'Fecha final',
+            'data' => $maxDate[0]->getFecha(),
+            'widget' => 'single_text'
+          ])
+          ->add('Buscar', SubmitType::class, array('label' => 'Buscar'))
+          ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+          $data=$form->getData();
+          $qb=$em->createQueryBuilder();
+          $qb->select('d')
+            ->from('AppBundle:Diario','d')
+            ->add('where', $qb->expr()->between(
+                'd.fecha',
+                ':from',
+                ':to'
+              )
+            )
+            ->setParameters(array('from' => $data['startDate'], 'to' => $data['dueDate']));
+            $diarios=$qb->getQuery()->getResult();
+        } else {
+          $diarios=$repo->findAll();
+        }
 
 
-        return $this->render('diario/index.html.twig', array(
+        return $this->render('diario/admin/index.html.twig', array(
             'diarios' => $diarios,
+          'form' => $form->createView(),
         ));
     }
 
@@ -44,29 +86,18 @@ class DiarioController extends Controller
     public function newAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $fecha=new \DateTime();
-
-        $diario=$em->getRepository(Diario::class)->findOneByFecha($fecha);
-
-        if ($diario) {
-            return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
-        }
 
         $diario = new Diario();
         $form = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          $diario->setObservaciones('--');
           $em->persist($diario);
           $em->flush();
 
-          //return $this->redirectToRoute('diario_new');
-
-          return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
         }
 
-        return $this->render('diario/open.html.twig', array(
+        return $this->render('diario/admin/new.html.twig', array(
           'diario' => $diario,
           'form' => $form->createView(),
         ));
@@ -82,7 +113,7 @@ class DiarioController extends Controller
     {
         // $deleteForm = $this->createDeleteForm($diario);
 
-        return $this->render('diario/show.html.twig', array(
+        return $this->render('diario/admin/show.html.twig', array(
             'diario' => $diario,
             //'delete_form' => $deleteForm->createView(),
         ));
@@ -98,7 +129,7 @@ class DiarioController extends Controller
     public function editAction(Request $request, Diario $diario)
     {
         $deleteForm = $this->createDeleteForm($diario);
-        $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario);
+        $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario, ['admin' => true]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -107,72 +138,13 @@ class DiarioController extends Controller
             return $this->redirectToRoute('diario_edit', array('id' => $diario->getId()));
         }
 
-        return $this->render('diario/edit.html.twig', array(
+        return $this->render('diario/admin/edit.html.twig', array(
             'diario' => $diario,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
-    /**
-     * Displays a form to edit an existing diario entity.
-     *
-     * @Route("/{id}/close", name="diario_close")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_USER')")"
-     */
-    public function closeAction(Request $request, Diario $diario)
-    {
-        //$deleteForm = $this->createDeleteForm($diario);
-        if ($diario->getObservaciones()=='--') {
-          $diario->setObservaciones('');
-        }
-        $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => true]);
-        $editForm->handleRequest($request);
-        $stillOpen=true;
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $diario->setActivo(false);
-            $this->getDoctrine()->getManager()->flush();
-            $stillOpen=false;
-            return $this->redirectToRoute('diario_send_close', [ 'id' => $diario->getId()]);
-        }
-        return $this->render('diario/edit.html.twig', array(
-          'diario' => $diario,
-          'edit_form' => $editForm->createView(),
-          'stillOpen' => $stillOpen
-          //'delete_form' => $deleteForm->createView(),
-        ));
-
-    }
-
-    /**
-     * Sends en email al cerrar la caja
-     *
-     * @Route("/{id}/sendclose", name="diario_send_close")
-     * @Method({"GET", "POST"})
-     * @Security("has_role('ROLE_USER')")"
-     */
-    public function sendCloseAction(\Swift_Mailer $mailer, Diario $diario)
-    {
-      $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/m/Y');
-      $sender="cafeta@ingobernable.net";
-      $recipient="caja@localhost"; // Alias que hay que crear en /etc/aliases
-      $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
-      $message = \Swift_Message::newInstance()
-      ->setSubject($subject)
-      ->setFrom($sender)
-      ->setTo($recipient)
-      ->setBody($body)
-      ;
-
-      $mailer->send($message);
-        return $this->render('diario/edit.html.twig', array(
-          'diario' => $diario,
-          'stillOpen' => false
-        ));
-
-    }
   /**
      * Deletes a diario entity.
      *
@@ -191,7 +163,7 @@ class DiarioController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('diario_index');
+        return $this->redirectToRoute('admin_diario_index');
     }
 
     /**
