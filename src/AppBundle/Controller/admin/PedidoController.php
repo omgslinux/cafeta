@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\user;
+namespace AppBundle\Controller\admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,7 +10,7 @@ use AppBundle\Entity\Pedido;
 /**
  * Pedido controller.
  *
- * @Route("/user/pedidos")
+ * @Route("/admn/pedidos")
  */
 class PedidoController extends Controller
 {

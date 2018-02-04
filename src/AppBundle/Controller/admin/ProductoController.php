@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\user;
+namespace AppBundle\Controller\admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,7 +10,7 @@ use AppBundle\Entity\Producto;
 /**
  * Producto controller.
  *
- * @Route("/user/productos")
+ * @Route("/admin/productos")
  */
 class ProductoController extends Controller
 {
