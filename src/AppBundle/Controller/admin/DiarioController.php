@@ -133,6 +133,7 @@ class DiarioController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $diario->setActivo(false);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('diario_edit', array('id' => $diario->getId()));

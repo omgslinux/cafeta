@@ -24,6 +24,7 @@
                 <th>Final</th>
                 <th>Sobre</th>
                 <th>Colectivo</th>
+                <th>¿Abierta?</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
                 <td>{{ diario.final|number_format(2,',','.') }} €</td>
                 <td>{{ diario.sobre }}</td>
                 <td>{{ diario.colectivo }}</td>
+                <td>{{ diario.activo }}</td>
             </tr>
         {% endfor %}
         </tbody>
