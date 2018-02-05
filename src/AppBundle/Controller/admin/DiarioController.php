@@ -30,22 +30,21 @@ class DiarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $repo=$em->getRepository(Diario::class);
-        $minDate=$repo->getMinDate();
-        $maxDate=$repo->getMaxDate();
+        $minDate=$repo->getMinDate()[0]['fecha'];
+        $maxDate=$repo->getMaxDate()[0]['fecha'];
 
-        //$diario = new Diario();
         $defaultData=['message' => 'Selecciona las fechas para filtrar'];
         $form = $this->createFormBuilder($defaultData)
           ->add('startDate', DateType::class,
           [
             'label' => 'Fecha inicio',
-            'data' => $minDate[0]->getFecha(),
+            'data' => $minDate,
             'widget' => 'single_text'
           ])
           ->add('dueDate', DateType::class,
           [
             'label' => 'Fecha final',
-            'data' => $maxDate[0]->getFecha(),
+            'data' => $maxDate,
             'widget' => 'single_text'
           ])
           ->add('Buscar', SubmitType::class, array('label' => 'Buscar'))
@@ -55,20 +54,26 @@ class DiarioController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
           $data=$form->getData();
-          $qb=$em->createQueryBuilder();
-          $qb->select('d')
-            ->from('AppBundle:Diario','d')
-            ->add('where', $qb->expr()->between(
-                'd.fecha',
-                ':from',
-                ':to'
-              )
-            )
-            ->setParameters(array('from' => $data['startDate'], 'to' => $data['dueDate']));
-            $diarios=$qb->getQuery()->getResult();
-        } else {
-          $diarios=$repo->findAll();
+          $minDate=$data['startDate'];
+          $maxDate=$data['dueDate'];
         }
+        $qb=$em->createQueryBuilder();
+        $qb->select('d')
+        ->from('AppBundle:Diario','d')
+        ->add('where', $qb->expr()->between(
+          'd.fecha',
+          ':from',
+          ':to'
+          )
+        )
+        ->add('orderBy', 'd.fecha DESC')
+        ->setParameters(
+          [
+            'from' => $minDate,
+            'to' => $maxDate
+          ]
+        );
+        $diarios=$qb->getQuery()->getResult();
 
 
         return $this->render('diario/admin/index.html.twig', array(

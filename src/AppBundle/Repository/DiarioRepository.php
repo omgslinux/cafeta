@@ -14,7 +14,7 @@ class DiarioRepository extends EntityRepository
     public function getMaxDate()
     {
         $qb = $this->createQueryBuilder('d')
-          ->select('d')
+          ->select('d.fecha')
           ->addOrderBy('d.fecha', 'DESC')
           ->setMaxResults(1);
 
@@ -25,7 +25,7 @@ class DiarioRepository extends EntityRepository
     public function getMinDate()
     {
         $qb = $this->createQueryBuilder('d')
-          ->select('d')
+          ->select('d.fecha')
           ->addOrderBy('d.fecha', 'ASC')
           ->setMaxResults(1);
 
