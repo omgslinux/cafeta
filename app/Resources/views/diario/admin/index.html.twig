@@ -19,7 +19,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Fecha</th>
+                <th>Turno</th>
                 <th>Inicial</th>
                 <th>Final</th>
                 <th>Sobre</th>
@@ -31,7 +31,7 @@
         {% set iniciales=0 %}{% set finales=0 %}
         {% for diario in diarios %}{% set finales=finales+diario.sobre %}
             <tr>
-                <td><a href="{{ path('diario_show', { 'id': diario.id }) }}">{{ diario.fecha|date('d/m/Y') }}</a></td>
+                <td><a href="{{ path('diario_show', { 'id': diario.id }) }}">{{ diario.fecha|date('d/m/Y') }} ({{ diario.turno|turnoStatus }})</a></td>
                 <td>{{ diario.inicial|number_format(2,',','.') }} €</td>
                 <td>{{ diario.final|number_format(2,',','.') }} €</td>
                 <td>{{ diario.sobre }}</td>

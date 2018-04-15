@@ -37,10 +37,13 @@ class DiarioController extends Controller
         // Comprobamos si está pendiente de cerrar la del día anterior
         $fecha->modify('-1 day');
         $diario=$em->getRepository(Diario::class)->findOneBy(
-          [
-            'fecha' => $fecha,
-            'activo' => 1
-          ], ['fecha' => 'ASC']
+            [
+                'fecha' => $fecha,
+                'activo' => 1
+            ],
+            [
+                'fecha' => 'ASC'
+            ]
         );
 
         if ($diario) {
@@ -51,10 +54,7 @@ class DiarioController extends Controller
         // Hay que abrir caja
 
         return $this->redirectToRoute('diario_open');
-/*        return $this->render('diario/index.html.twig', array(
-            'diarios' => $diarios,
-        ));
-*/    }
+    }
 
     /**
      * Creates a new diario entity.
@@ -67,24 +67,32 @@ class DiarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $fecha=new \DateTime();
 
-        $diario=$em->getRepository(Diario::class)->findOneByFecha($fecha);
+        $diarios=$em->getRepository(Diario::class)->findBy(
+            [
+                'fecha' => $fecha,
+            ]
+        );
 
-        if ($diario) {
-            return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
+        foreach ($diarios as $diario) {
+            if ($diario->isActivo()) {
+                return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
+
+            }
         }
+
 
         $diario = new Diario();
         $form = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          $diario->setObservaciones('--');
-          $em->persist($diario);
-          $em->flush();
+            $diario->setObservaciones('--');
+            $em->persist($diario);
+            $em->flush();
 
-          //return $this->redirectToRoute('diario_new');
+            //return $this->redirectToRoute('diario_new');
 
-          return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
+            return $this->redirectToRoute('diario_close', array('id' => $diario->getId()));
         }
 
         return $this->render('diario/open.html.twig', array(
@@ -103,7 +111,7 @@ class DiarioController extends Controller
     public function closeAction(Request $request, Diario $diario)
     {
         if ($diario->getObservaciones()=='--') {
-          $diario->setObservaciones('');
+            $diario->setObservaciones('');
         }
         $editForm = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => true]);
         $editForm->handleRequest($request);
@@ -132,23 +140,25 @@ class DiarioController extends Controller
      */
     public function sendCloseAction(\Swift_Mailer $mailer, Diario $diario)
     {
-      $subject="Cierre de cafeta del turno " . $diario->getFecha()->format('d/m/Y');
-      $sender="cafeta@ingobernable.net";
-      $recipient="caja@localhost"; // Alias que hay que crear en /etc/aliases
-      $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " . $diario->getSobre() . " euros en el sobre";
-      $message = \Swift_Message::newInstance()
-      ->setSubject($subject)
-      ->setFrom($sender)
-      ->setTo($recipient)
-      ->setBody($body)
-      ;
+        $subject="Cierre de caja del turno de " . strtolower($diario->getTurno()) .
+            " de fecha " . $diario->getFecha()->format('d/m/Y');
+        $sender="cafeta@ingobernable.net";
+        $recipient="caja@localhost"; // Alias que hay que crear en /etc/aliases
+        $body="La caja ha cerrado con " . $diario->getFinal() . " euros, dejando " .
+            $diario->getSobre() . " euros en el sobre";
+        $message = \Swift_Message::newInstance()
+        ->setSubject($subject)
+        ->setFrom($sender)
+        ->setTo($recipient)
+        ->setBody($body)
+        ;
 
-      $mailer->send($message);
+        $mailer->send($message);
+
         return $this->render('diario/close.html.twig', array(
           'diario' => $diario,
           'stillOpen' => false
         ));
 
     }
-
 }

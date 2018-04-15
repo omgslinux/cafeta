@@ -9,10 +9,13 @@
             <div class="col-md-3">
                 {{ form_row(form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
             </div>
+            <div class="col-md-5">
+                {{ form_row(form.turno) }}
+            </div>
         </div>
         <div class="row">
           <div class="col-md-2">
-          {{ form_row(form.inicial) }}
+            {{ form_row(form.inicial) }}
           </div>
         </div>
         <div class="row">

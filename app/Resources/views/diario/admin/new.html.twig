@@ -8,7 +8,10 @@
             <div class="col-md-3">
                 {{ form_row(form.fecha, { 'attr': {'autocomplete': 'off'} }) }}
             </div>
-            <div class="col-md-9">
+            <div class="col-md-3">
+            {{ form_row(form.turno) }}
+            </div>
+            <div class="col-md-6">
                 {{ form_row(form.colectivo) }}
             </div>
         </div>
@@ -23,9 +26,6 @@
             <div class="col-md-2">
                 {{ form_row(form.sobre) }}
             </div>
-            <div class="col-md-6">
-                {{ form_row(form.responsable) }}
-            </div>
         </div>
 
         <div class="row">
@@ -36,4 +36,11 @@
 
         <button type="submit" class="btn btn-default">Guardar</button>
     {{ form_end(form) }}
+    {% if is_granted('ROLE_ADMIN') %}
+    <ul>
+        <li>
+            <a href="{{ path('admin_diario_index') }}">Back to the list</a>
+        </li>
+    </ul>
+    {% endif %}
 {% endblock %}

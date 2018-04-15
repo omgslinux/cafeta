@@ -5,12 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Colectivos;
 use AppBundle\Entity\Calendario;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Diario
  *
  * @ORM\Table(name="diario")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DiarioRepository")
+ * @UniqueEntity(
+ *  fields={"fecha", "turno"},
+ *  message="Ya existe una caja para ese turno"
+ * )
  */
 class Diario
 {
@@ -29,6 +34,13 @@ class Diario
      * @ORM\Column(type="date")
      */
     private $fecha;
+
+    /**
+    * @var tinyint
+    *
+    * @ORM\Column(type="integer", nullable=true)
+    */
+    private $turno=1;
 
     /**
      * @var string
@@ -287,6 +299,27 @@ class Diario
         return $this->activo;
     }
 
+    /**
+     * Set turno
+     *
+     * @param tinyint $turno
+     *
+     * @return Diario
+     */
+    public function setTurno($valor)
+    {
+        $this->turno = $valor;
 
+        return $this;
+    }
 
+    /**
+     * Get turno
+     *
+     * @return tinyint
+     */
+    public function getTurno()
+    {
+        return $this->turno;
+    }
 }

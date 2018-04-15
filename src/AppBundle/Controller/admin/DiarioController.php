@@ -35,43 +35,53 @@ class DiarioController extends Controller
 
         $defaultData=['message' => 'Selecciona las fechas para filtrar'];
         $form = $this->createFormBuilder($defaultData)
-          ->add('startDate', DateType::class,
-          [
-            'label' => 'Fecha inicio',
-            'data' => $minDate,
-            'widget' => 'single_text'
-          ])
-          ->add('dueDate', DateType::class,
-          [
-            'label' => 'Fecha final',
-            'data' => $maxDate,
-            'widget' => 'single_text'
-          ])
-          ->add('Buscar', SubmitType::class, array('label' => 'Buscar'))
-          ->getForm();
+        ->add(
+            'startDate',
+            DateType::class,
+            [
+                'label' => 'Fecha inicio',
+                'data' => $minDate,
+                'widget' => 'single_text'
+            ]
+        )
+        ->add(
+            'dueDate',
+            DateType::class,
+            [
+                'label' => 'Fecha final',
+                'data' => $maxDate,
+                'widget' => 'single_text'
+            ]
+        )
+        ->add('Buscar', SubmitType::class, array('label' => 'Buscar'))
+        ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          $data=$form->getData();
-          $minDate=$data['startDate'];
-          $maxDate=$data['dueDate'];
+            $data=$form->getData();
+            $minDate=$data['startDate'];
+            $maxDate=$data['dueDate'];
         }
         $qb=$em->createQueryBuilder();
         $qb->select('d')
-        ->from('AppBundle:Diario','d')
-        ->add('where', $qb->expr()->between(
-          'd.fecha',
-          ':from',
-          ':to'
-          )
+        ->from('AppBundle:Diario', 'd')
+        ->add(
+            'where',
+            $qb->expr()
+            ->between(
+                'd.fecha',
+                ':from',
+                ':to'
+            )
         )
         ->add('orderBy', 'd.fecha DESC')
+        ->addOrderBy('d.turno', 'ASC')
         ->setParameters(
-          [
-            'from' => $minDate,
-            'to' => $maxDate
-          ]
+            [
+                'from' => $minDate,
+                'to' => $maxDate
+            ]
         );
         $diarios=$qb->getQuery()->getResult();
 
@@ -93,13 +103,12 @@ class DiarioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $diario = new Diario();
-        $form = $this->createForm('AppBundle\Form\DiarioType', $diario, ['activo' => false]);
+        $form = $this->createForm('AppBundle\Form\DiarioType', $diario, ['admin' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-          $em->persist($diario);
-          $em->flush();
-
+            $em->persist($diario);
+            $em->flush();
         }
 
         return $this->render('diario/admin/new.html.twig', array(

@@ -4,14 +4,16 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
+use AppBundle\Utils\Turno;
 
 class DiarioType extends AbstractType
 {
@@ -23,7 +25,7 @@ class DiarioType extends AbstractType
         if ($options['admin']) {
             $disabled=false;
         } else {
-          $disabled=$options['activo']; //?false:true;
+            $disabled=$options['activo']; //?false:true;
         }
 
         $builder
@@ -32,6 +34,16 @@ class DiarioType extends AbstractType
           'label' => 'Fecha turno',
           'disabled' => $disabled,
         ))
+        ->add(
+            'turno',
+            ChoiceType::class,
+            [
+                'label' => 'Turno',
+                'choices' => Turno::getOptions(),
+                'attr' => array('class' => 'chosen-select'),
+                'disabled' => $disabled,
+            ]
+        )
         ->add('colectivo', TextType::class, array(
           'label' => 'Colectivo',
           'disabled' => $disabled,
@@ -49,34 +61,34 @@ class DiarioType extends AbstractType
         ;
         if ($options['activo']||$options['admin']) {
 
-        $builder
-        ->add('final', MoneyType::class, array(
-          'label' => 'Caja al cerrar',
-          'constraints' => array(
-            new NotEqualTo('0')
-          ),
-          'attr' => array(
-            'placeholder' => '0,00',
-          )
-        ))
-        ->add('sobre', MoneyType::class, array(
-          'label' => 'Cantidad en sobre',
-          'constraints' => array(
-            new NotEqualTo('0')
-          ),
-          'attr' => array(
-            'placeholder' => '0,00',
-          )
-        ))
-        ->add('observaciones', TextareaType::class, array(
-          'label' => 'Observaciones',
-          'attr' => array (
-            'rows' => 3,
-            'placeholder' => 'Indica al menos si has pedido cervezas o hay que pedirlas',
-          )
-        ))
-        ;
-      }
+            $builder
+            ->add('final', MoneyType::class, array(
+              'label' => 'Caja al cerrar',
+              'constraints' => array(
+                new NotEqualTo('0')
+              ),
+              'attr' => array(
+                'placeholder' => '0,00',
+              )
+            ))
+            ->add('sobre', MoneyType::class, array(
+              'label' => 'Cantidad en sobre',
+              'constraints' => array(
+                new NotEqualTo('0')
+              ),
+              'attr' => array(
+                'placeholder' => '0,00',
+              )
+            ))
+            ->add('observaciones', TextareaType::class, array(
+              'label' => 'Observaciones',
+              'attr' => array (
+                'rows' => 3,
+                'placeholder' => 'Indica al menos si has pedido cervezas o hay que pedirlas',
+              )
+            ))
+            ;
+        }
     }
 
     /**
@@ -98,6 +110,4 @@ class DiarioType extends AbstractType
     {
         return 'appbundle_diario';
     }
-
-
 }
